@@ -17,8 +17,6 @@ export default function PageWrapper(props: PageWrapperPropTypes) {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
       {children}
