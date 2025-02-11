@@ -22,7 +22,7 @@ function BasicArrayPush(props: BasicArrayPushPropTypes) {
         marginLeft: 25,
       }}
     >
-      <h2>This is Array Push page</h2>
+      <h1>This is Array Push page</h1>
       <input value={newFruit} onChange={handleOnChange} />
       <button onClick={handleEnter}>Enter</button>
 
