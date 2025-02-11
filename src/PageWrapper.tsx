@@ -13,7 +13,7 @@ export default function PageWrapper(props: PageWrapperPropTypes) {
       {...restProps}
       maxWidth="xl"
       sx={{
-        py: 4,
+        pt: 1,
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
