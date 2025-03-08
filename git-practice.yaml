@@ -19,6 +19,7 @@ Basic Git practice and overview with commands
             - feature/login
             - feature/payment
             - feature/checkout
+            - task/delete-code
         - Multiple developers
             - Anupama
             - Prasanna
