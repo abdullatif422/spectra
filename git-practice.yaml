@@ -34,11 +34,19 @@ Basic Git practice and overview with commands
               - admin will review the code and merge the code to the main branch
               - developers have to delete the local and remote branch after merging the code to the main branch
               - developers have to create a new branch for the new feature
-            - Basic commands 
-              - create a - feature/cart (branch)
+            - Basic commands
               - git checkout main
               - git pull origin main
               - git checkout -b feature/cart
               - git add .
               - git commit -m "my commit message"
               - git push
+            - Feature changes completed
+              - git checkout main
+              - git pull origin main
+              - git checkout feature/cart
+              - git merge main
+              - Resolve conflicts if any
+              - git push
+              - follow pull request creation from the git website (compare and create a pull request)
+              - after merging the code, delete the local and remote branch
