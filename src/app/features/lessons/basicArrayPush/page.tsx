@@ -19,7 +19,7 @@ function BasicArrayPush(props: BasicArrayPushPropTypes) {
   return (
     <div
       style={{
-        marginLeft: 25,
+        marginLeft: 30,
       }}
     >
       <h1>This is Array Push page</h1>
@@ -38,3 +38,4 @@ function BasicArrayPush(props: BasicArrayPushPropTypes) {
 }
 
 export default BasicArrayPush;
+ 
