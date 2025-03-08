@@ -1,0 +1,44 @@
+Basic Git practice and overview with commands
+
+- Git - (vesioning tool)
+    - Local
+    - Remote
+        - Github
+        - Gitlab
+        - Bitbucket
+
+- Company organization
+    - Admin will maintain the Git repo
+        - main branch or master branch (parent branch)
+          - // admin will create a basic main/master branch.
+          - //releases will be done with ref to this branch (ex: v1.0, v2.0)
+        - developers have to clone this repo to their local machine
+        - developers have to create a child branch from the main branch only
+        - Ex: Child branches (feature branches)
+            - feature/cart (anupama is working on this feature)
+            - feature/login
+            - feature/payment
+            - feature/checkout
+        - Multiple developers
+            - Anupama
+            - Prasanna
+            - Srinivas
+            - Suresh
+        - Anupama
+            - Developer notes
+              - before starting the work, developers have to pull the latest code from the main branch
+              - developers have to create a new branch from the main branch
+              - developers have to work on the new branch
+              - after completing the work, developers have to push the code to the remote branch
+              - developers have to create a pull request to the main branch
+              - admin will review the code and merge the code to the main branch
+              - developers have to delete the local and remote branch after merging the code to the main branch
+              - developers have to create a new branch for the new feature
+            - Basic commands 
+              - create a - feature/cart (branch)
+              - git checkout main
+              - git pull origin main
+              - git checkout -b feature/cart
+              - git add .
+              - git commit -m "my commit message"
+              - git push
