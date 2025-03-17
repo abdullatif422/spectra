@@ -13,7 +13,8 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import theme from "../theme";
-import ModeSwitch from "../components/ModeSwitch";
+// import ModeSwitch from "../components/ModeSwitch";
+import Header from "./features/reusableComponents/header";
 
 // Create an Emotion cache instance
 const cache = createCache({ key: "css" }); // Key must be 'css'
@@ -37,7 +38,7 @@ export default function RootLayout({
           <InitColorSchemeScript attribute="class" />
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <ModeSwitch />
+            <Header/>
             {children}
           </ThemeProvider>
         </CacheProvider>
