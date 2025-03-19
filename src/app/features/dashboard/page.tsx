@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
-import {Box,Container,Button,Typography,Chip} from "@mui/material";
+import {Box,Container,Button,Typography,Chip,TextField,} from "@mui/material";
 import SubHeader from "../reusableComponents/SubHeader";
 import Grid from "@mui/material/Grid2";
+import { useRouter } from "next/navigation";
 
-
- const SampleProductData = [
+const SampleProductData = [
   {
     id: "1",
     brand: "Instafab Plus",
-    category: "men",
+    category: "Men",
     name: "Striped Polo Collar Cotton T-shirt",
     image: "https://m.media-amazon.com/images/I/61BZMmfO6lL._SX679_.jpg",
     price: { mrp: 1699, selling_price: 832 },
@@ -58,7 +58,7 @@ import Grid from "@mui/material/Grid2";
     customerReviews: [
       {
         id: "1",
-        name: "Er Shamik Mukherjee",
+        name: "Shamik Mukherjee",
         date: "3 Sept 2024",
         rating: "5⭐",
         review:
@@ -86,7 +86,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "2",
     brand: "Dennis Lingo",
-    category: "men",
+    category: "Men",
     name: "Men Mid Rise Comfort Slim Fit Stretchable Jeans",
     image: "https://m.media-amazon.com/images/I/510yEP9YOwL._SX679_.jpg",
     price: { mrp: 2849, selling_price: 911 },
@@ -179,7 +179,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "3",
     brand: "Jompers",
-    category: "men",
+    category: "Men",
     name: "Ethnic Motifs Embroidered Mandarin Collar Straight Pure Cotton Straight Kurta",
     image: "https://m.media-amazon.com/images/I/61Ua5veTtbL._SY550_.jpg",
     price: { mrp: 5199, selling_price: 935 },
@@ -256,7 +256,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "4",
     brand: "Red Tape",
-    category: "men",
+    category: "Men",
     name: "Men Color blocked Round Toe Memory Foam Sneakers",
     image:
       "https://redtape.com/cdn/shop/files/RSL0536_1_3114676c-7f12-48b1-afc5-393e31e84777.jpg?v=1740077063&width=416",
@@ -333,7 +333,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "5",
     brand: "Hidesign",
-    category: "men",
+    category: "Men",
     name: "Men Brown Solid Leather Card Holder",
     image:
       "https://hidesign.com/cdn/shop/files/8903439814328_360x.jpg?v=1737452459",
@@ -410,7 +410,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "6",
     brand: "Anouk",
-    category: "women",
+    category: "Women",
     name: "Floral Printed Thread Work Straight Kurta with Trousers & Dupatta",
     image:
       "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTKm8LzF9St4G9HyF1qt1537_EE_DE_OpXvCJHXFk6SNq1v9Xse",
@@ -475,7 +475,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "7",
     brand: "Claura",
-    category: "women",
+    category: "Women",
     name: "Women Floral Print Mandarin Collar Short Sleeves Fit and Flare Midi Dress",
     image: "https://m.media-amazon.com/images/I/71QL6f06vQL._SX679_.jpg",
     price: { mrp: 2899, selling_price: 985 },
@@ -557,7 +557,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "8",
     brand: "Kaftanize",
-    category: "women",
+    category: "Women",
     name: "Embroidered Shirt With Trouser",
     image:
       "https://img.tatacliq.com/images/i17//437Wx649H/MP000000021180062_437Wx649H_202404211838431.jpeg",
@@ -638,7 +638,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "9",
     brand: "Shezone",
-    category: "women",
+    category: "Women",
     name: "Rose Gold Embellished Party Block Heels",
     image:
       "https://rukminim1.flixcart.com/image/300/300/l52sivk0/sandal/e/6/i/3-8009-3-shezone-rose-gold-original-imagfu9hkhju8ag3.jpeg",
@@ -726,7 +726,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "10",
     brand: "Silvermerc Designs",
-    category: "women",
+    category: "Women",
     name: "Brass Gold-Plated Layered Necklace",
     image:
       "https://rukminim2.flixcart.com/image/850/1000/xif0q/necklace-chain/a/0/x/1-sbn8rd-291-necklace-set-silvermerc-designs-original-imagxunyptbse9jm.jpeg?q=20&crop=false",
@@ -816,7 +816,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "11",
     brand: "Lino Perros",
-    category: "women",
+    category: "Women",
     name: "Sea Green Solid Structured Handheld Bag",
     image: "https://m.media-amazon.com/images/I/91oJ-ldk7nL._SY695_.jpg",
     price: { mrp: 4495, selling_price: 1663 },
@@ -909,7 +909,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "12",
     brand: "BONKIDS",
-    category: "kids",
+    category: "Kids",
     name: "Boys Tartan Checked Spread Collar Casual Cotton Shirt",
     image: "https://m.media-amazon.com/images/I/71WfOFM7m6L._SX679_.jpg",
     price: { mrp: 2249, selling_price: 674 },
@@ -983,7 +983,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "13",
     brand: "Cherry & Jerry",
-    category: "kids",
+    category: "Kids",
     name: "Girls V-Neck Ruffled Waist Tie-Up Basic Jumpsuit",
     image: "https://m.media-amazon.com/images/I/61-deiTBk0L._SY741_.jpg",
     price: { mrp: 3399, selling_price: 985 },
@@ -1064,7 +1064,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "14",
     brand: "HOOH Now Comfort in Fashion",
-    category: "kids",
+    category: "Kids",
     name: "Kids Barbie Perforations Sneakers",
     image: "https://m.media-amazon.com/images/I/81CW4imFrgL._SY675_.jpg",
     price: { mrp: 1999, selling_price: 779 },
@@ -1150,7 +1150,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "15",
     brand: "AN TEDDY",
-    category: "kids",
+    category: "Kids",
     name: "Teddy Bear Polyfill Core Soft Toys and Dolls",
     image: "https://m.media-amazon.com/images/I/51neWCT-uIL.jpg",
     price: { mrp: 2499, selling_price: 1374 },
@@ -1222,7 +1222,7 @@ import Grid from "@mui/material/Grid2";
   {
     id: "16",
     brand: "BUMZEE",
-    category: "kids",
+    category: "Kids",
     name: "Infant Boys Printed Cotton Rompers",
     image:
       "https://cdn.fcglcdn.com/brainbees/images/products/zoom/13946430a.webp",
@@ -1815,6 +1815,12 @@ export default function Dashboard() {
   const [products, setProducts] = React.useState(SampleProductData);
   const [view, setView] = React.useState("list");
   const [sizes, setSizes] = React.useState<{ [key: string]: boolean }>({});
+  const [search, setSearch] = React.useState("");
+  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(null);
+
+  // const filteredProducts = selectedCategory
+  //   ? SampleProductData.filter((product) => product.category == selectedCategory)
+  //   : SampleProductData;
 
   const handleViewChange = (type: string) => {
     setView(type);
@@ -1823,23 +1829,43 @@ export default function Dashboard() {
   const handleSizesChange = (id: string) => {
     setSizes((prevItems) => ({
       ...prevItems,
-      [id]:!prevItems[id],
+      [id]: !prevItems[id],
     }));
+  };
+
+  const router = useRouter();
+  const handleOnProductClick = (id: string) => {
+    router.push(`/features/dashboard/detail?id=${id}`);
+  };
+
+  const handleOnSearch = (event: any) => {
+    const value = event.target.value;
+    setSearch(value);
+    const filteredProducts = SampleProductData.filter((product) =>
+      product.brand.toLowerCase().includes(value.toLowerCase())
+    );
+    setProducts(filteredProducts);
   };
 
   return (
     <Container maxWidth="xl" disableGutters>
       <SubHeader />
+
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-end",
           gap: 2,
-          padding: 2,
+          padding: 1,
         }}
       >
-        <Button variant="outlined">Search</Button>
+        <TextField
+          variant="outlined"
+          placeholder="Search..."
+          value={search}
+          onChange={handleOnSearch}
+        />
 
         <Button
           variant={view == "grid" ? "contained" : "outlined"}
@@ -1859,7 +1885,7 @@ export default function Dashboard() {
           <Box
             sx={{
               height: `calc(100vh - 128px)`,
-              backgroundColor: "red",
+              // backgroundColor: "red",
             }}
           ></Box>
         </Grid>
@@ -1867,7 +1893,7 @@ export default function Dashboard() {
           <Box
             sx={{
               minHeight: `calc(100vh - 128px)`,
-              backgroundColor: "GrayText",
+              // backgroundColor: "GrayText",
               padding: 2,
               overflowY: "auto",
               display: view == "grid" ? "grid" : "block",
@@ -1878,135 +1904,139 @@ export default function Dashboard() {
               alignItems: "center",
             }}
           >
-            {products?.map((product, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: 2,
-                  backgroundColor: "white",
-                  borderRadius: "4px",
-                  marginBottom: 1,
-                  minHeight: "350px",
-                  height: "auto",
-                  gap: 1,
-                }}
-              >
+              {products.map((product) => (
                 <Box
-                  component="img"
-                  src={product.image}
+                  key={product.id}
                   sx={{
-                    width: 150,
-                    height: 150,
-                    backgroundColor: "purple",
-                    objectFit: "fill",
-                    border: "1px solid black",
+                    display: "flex",
+                    alignItems: "center",
+                    padding: 2,
+                    backgroundColor: "white",
+                    borderRadius: "4px",
+                    marginBottom: 1,
+                    minHeight: "350px",
+                    height: "auto",
+                    gap: 1,
+                    cursor: "pointer",
                   }}
-                />
-                <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
-                  <Box>
-                    <Typography variant="h6" color="black" fontWeight="bold">
-                      {product.brand}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography variant="body1" color="gray">
-                      {product.name}
-                    </Typography>
-                  </Box>
+                  onClick={() => handleOnProductClick(product.id)}
+                >
                   <Box
+                    component="img"
+                    src={product.image}
                     sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                      backgroundColor: "lavender",
-                      padding: "4px 8px",
-                      borderRadius: 4,
-                      marginTop: 1,
-                      width: "fit-content",
+                      width: 150,
+                      height: 150,
+                      backgroundColor: "purple",
+                      objectFit: "fill",
+                      border: "1px solid black",
                     }}
-                  >
-                    {product.ratings.stars}⭐ | {product.ratings.total_ratings}{" "}
-                    Ratings
-                  </Box>
+                  />
                   <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "left",
-                      alignItems: "center",
-                      gap: 3,
-                    }}
+                    sx={{ display: "flex", flex: 1, flexDirection: "column" }}
                   >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: "bold",
-                      }}
-                    >
-                      ₹{product.price.selling_price}
-                    </Typography>
-
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        textDecoration: "line-through",
-                        color: "gray",
-                      }}
-                    >
-                      MRP : ₹{product.price.mrp}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      sx={{
-                        color: "orange",
-                      }}
-                    >
-                      ({product.discount})
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      variant: "body2",
-                      fontWeight: "bold",
-                      color: "green",
-                    }}
-                  >
-                    inclusive of all taxes
-                  </Box>
-                  <Box>
-                    <Typography variant="body2" fontWeight="bold">
-                      Available Sizes
-                    </Typography>
+                    <Box>
+                      <Typography variant="h6" color="black" fontWeight="bold">
+                        {product.brand}
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant="body1" color="gray">
+                        {product.name}
+                      </Typography>
+                    </Box>
                     <Box
                       sx={{
                         display: "flex",
-                        flexWrap: "wrap",
+                        alignItems: "center",
                         gap: 1,
-                        paddingTop: 1,
-                        maxHeight: "50px",
+                        backgroundColor: "lavender",
+                        padding: "4px 8px",
+                        borderRadius: 4,
+                        marginTop: 1,
+                        width: "fit-content",
                       }}
                     >
-                      {(sizes[product.id]
-                        ? product.available_sizes
-                        : product.available_sizes.slice(0, 4)
-                      ).map((size) => (
-                        <Chip key={size} label={size} variant="outlined" />
-                      ))}
-                      {product.available_sizes.length > 4 && (
-                        <Button
-                          onClick={() => handleSizesChange(product.id)}
-                          size="small"
-                        >
-                          More
-                        </Button>
-                      )}
+                      {product.ratings.stars}⭐ |{" "}
+                      {product.ratings.total_ratings} Ratings
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "left",
+                        alignItems: "center",
+                        gap: 3,
+                      }}
+                    >
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontWeight: "bold",
+                        }}
+                      >
+                        ₹{product.price.selling_price}
+                      </Typography>
+
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          textDecoration: "line-through",
+                          color: "gray",
+                        }}
+                      >
+                        MRP : ₹{product.price.mrp}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        sx={{
+                          color: "orange",
+                        }}
+                      >
+                        ({product.discount})
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        variant: "body2",
+                        fontWeight: "bold",
+                        color: "green",
+                      }}
+                    >
+                      inclusive of all taxes
+                    </Box>
+                    <Box>
+                      <Typography variant="body2" fontWeight="bold">
+                        Available Sizes
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 1,
+                          paddingTop: 1,
+                          maxHeight: "50px",
+                        }}
+                      >
+                        {(sizes[product.id]
+                          ? product.available_sizes
+                          : product.available_sizes.slice(0, 4)
+                        ).map((size) => (
+                          <Chip key={size} label={size} variant="outlined" />
+                        ))}
+                        {product.available_sizes.length > 4 && (
+                          <Button
+                            onClick={() => handleSizesChange(product.id)}
+                            size="small"
+                          >
+                            More
+                          </Button>
+                        )}
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-            ))}
+              ))}
           </Box>
         </Grid>
       </Grid>
