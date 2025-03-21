@@ -5,6 +5,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import Grid from "@mui/material/Grid2";
+import { useRouter } from "next/navigation";
 
 const HeaderCategories = [
   {
@@ -96,6 +97,7 @@ const HeaderCategories = [
   },
   {
     name: "Home & Living",
+    filterBy:"home_and_living",
     subCategories: [
       { group_name: "Bed Linen & Furnishing", name: "Bedsheets" },
       { group_name: "Bed Linen & Furnishing", name: "Bed Runners" },
@@ -144,6 +146,13 @@ const HeaderCategories = [
 ];
 
 export default function Header() {
+  const router=useRouter();
+
+  const handleFilteredBy = (category: any) => {
+    const filterValue = category.name === "Home & Living" ? "home_and_living" : category.name;  
+    router.push(`/features/dashboard?filterBy=${filterValue}`);
+  };
+
   return (
     <Box
       sx={{
@@ -152,11 +161,11 @@ export default function Header() {
         flexGrow:1,
         backgroundColor: "white",
         alignItems: "center",
-        position: "fixed",
-        top: 0,
-        zIndex: 1000,
-        boxShadow: 2,
-        width:"100%"
+        // position: "fixed",
+        // top: 0,
+        // zIndex:1000,
+        // boxShadow: 2,
+        width:"100%",
        
       }}
     >
@@ -182,6 +191,7 @@ export default function Header() {
             }}>
             {HeaderCategories?.map((Category) => (
               <Box key={Category.name}
+                onClick={() => handleFilteredBy(Category)}
               sx={{
                 display:"flex",
                 flexDirection:"column",

@@ -5,6 +5,7 @@ import {Box,Container,Button,Typography,Chip,TextField,} from "@mui/material";
 import SubHeader from "../reusableComponents/SubHeader";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from 'next/navigation';
 
 const SampleProductData = [
   {
@@ -1812,15 +1813,27 @@ const SampleProductData = [
 ];
 
 export default function Dashboard() {
+  const router = useRouter();
+  const searchParams= useSearchParams();
+  const filterBy = searchParams.get('filterBy');
+
   const [products, setProducts] = React.useState(SampleProductData);
   const [view, setView] = React.useState("list");
   const [sizes, setSizes] = React.useState<{ [key: string]: boolean }>({});
   const [search, setSearch] = React.useState("");
-  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(null);
-
-  // const filteredProducts = selectedCategory
-  //   ? SampleProductData.filter((product) => product.category == selectedCategory)
-  //   : SampleProductData;
+  
+ React.useEffect(() => {
+    if (filterBy){
+       const filteredProducts = SampleProductData.filter((product) => {
+         if(filterBy=== "home_and_living") {
+           return product.category==="Home & Living";
+          }
+          return product.category.toLowerCase() === filterBy.toLowerCase();
+      });
+       setProducts(filteredProducts);
+   }
+ },[filterBy]);
+  
 
   const handleViewChange = (type: string) => {
     setView(type);
@@ -1833,150 +1846,200 @@ export default function Dashboard() {
     }));
   };
 
-  const router = useRouter();
   const handleOnProductClick = (id: string) => {
     router.push(`/features/dashboard/detail?id=${id}`);
   };
 
   const handleOnSearch = (event: any) => {
-    const value = event.target.value;
-    setSearch(value);
+    setSearch(event.target.value);
     const filteredProducts = SampleProductData.filter((product) =>
-      product.brand.toLowerCase().includes(value.toLowerCase())
+      product.brand.toLowerCase().includes(search.toLowerCase())
     );
     setProducts(filteredProducts);
   };
 
+  const styles = `
+   
+    .subheader {
+      flex-shrink: 0;
+      background-color: white;
+      padding: 8px 0;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px; 
+      padding: 16px;
+    }
+
+    
+    .filter-box {
+      height: calc(100vh - 128px); 
+      
+    }
+
+    
+    .display-list {
+      min-height: calc(100vh - 128px);
+      padding: 16px;
+      overflow: auto; 
+      display: ${view === "grid" ? "grid" : "block"}; 
+      grid-template-columns: ${
+        view === "grid" ? "repeat(auto-fill,minmax(350px,1fr))" : "none"
+      }; 
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    
+    .product-box {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background-color: white;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      min-height: 350px;
+      height: auto;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    
+    .product-image {
+      width: 150px;
+      height: 150px;
+      background-color: purple;
+      object-fit: fill;
+      border: 1px solid black;
+    }
+
+    
+    .product-details {
+      display: flex;
+      flex: 1; 
+      flex-direction: column;
+    }
+
+    
+    .ratings-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: lavender;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+      width: fit-content; 
+    }
+
+    
+    .price-box {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      gap: 24px;
+    }
+
+    
+    .discount-text {
+      color: orange;
+    }
+
+    
+    .taxes-text {
+      color: green;
+    }
+
+    
+    .sizes {
+      display: flex;
+      flex-wrap: wrap; 
+      gap: 8px;
+      padding-top: 8px;
+      max-height: 50px; 
+    }
+      
+    .size-chip {
+      margin: 2px; 
+    }
+
+    
+    .more-button {
+      margin-left: 2px; 
+    }
+
+  `;
+
+
   return (
     <Container maxWidth="xl" disableGutters>
-      <SubHeader />
+      <style>{styles}</style> 
+        <Box className="subheader">
+          <SubHeader />
+        </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          gap: 2,
-          padding: 1,
-        }}
-      >
+      <Box className="search-bar">
         <TextField
-          variant="outlined"
-          placeholder="Search..."
-          value={search}
-          onChange={handleOnSearch}
+        label="Search"
+         variant="outlined"
+         value={search}
+         onChange={handleOnSearch}
         />
-
         <Button
-          variant={view == "grid" ? "contained" : "outlined"}
-          onClick={() => handleViewChange("grid")}
+         variant={view==="grid" ? "contained": "outlined"}
+         onClick={()=>handleViewChange("grid")}
         >
           Grid
         </Button>
         <Button
-          variant={view == "list" ? "contained" : "outlined"}
-          onClick={() => handleViewChange("list")}
+         variant={view==="list" ? "contained": "outlined"}
+         onClick={()=>handleViewChange("list")}
         >
           List
         </Button>
       </Box>
       <Grid container>
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Box
-            sx={{
-              height: `calc(100vh - 128px)`,
-              // backgroundColor: "red",
-            }}
-          ></Box>
+        <Grid size={{xs:12,md:4}}>
+          <Box className="filter-box"></Box>
         </Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <Box
-            sx={{
-              minHeight: `calc(100vh - 128px)`,
-              // backgroundColor: "GrayText",
-              padding: 2,
-              overflowY: "auto",
-              display: view == "grid" ? "grid" : "block",
-              gridTemplateColumns:
-                view == "grid" ? "repeat(auto-fill,minmax(350px,1fr))" : "none",
-              gap: 2,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+        <Grid size={{xs:12,md:8}}>
+          <Box className="display-list">
+            {products?.map((product)=>(
+            <Box
+            key={product.id}
+            className="product-box"
+            onClick={()=>handleOnProductClick(product.id)}
           >
-              {products.map((product) => (
-                <Box
-                  key={product.id}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    padding: 2,
-                    backgroundColor: "white",
-                    borderRadius: "4px",
-                    marginBottom: 1,
-                    minHeight: "350px",
-                    height: "auto",
-                    gap: 1,
-                    cursor: "pointer",
-                  }}
-                  onClick={() => handleOnProductClick(product.id)}
-                >
-                  <Box
-                    component="img"
-                    src={product.image}
-                    sx={{
-                      width: 150,
-                      height: 150,
-                      backgroundColor: "purple",
-                      objectFit: "fill",
-                      border: "1px solid black",
-                    }}
-                  />
-                  <Box
-                    sx={{ display: "flex", flex: 1, flexDirection: "column" }}
-                  >
-                    <Box>
-                      <Typography variant="h6" color="black" fontWeight="bold">
-                        {product.brand}
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="body1" color="gray">
-                        {product.name}
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                        backgroundColor: "lavender",
-                        padding: "4px 8px",
-                        borderRadius: 4,
-                        marginTop: 1,
-                        width: "fit-content",
-                      }}
-                    >
-                      {product.ratings.stars}⭐ |{" "}
-                      {product.ratings.total_ratings} Ratings
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "left",
-                        alignItems: "center",
-                        gap: 3,
-                      }}
-                    >
+            <Box
+            component="img"
+            src={product.image}
+            className="product-image"
+            />
+            <Box className="product-details">
+              <Box>
+                <Typography variant="h6" color="black" fontWeight="bold">
+                  {product.brand}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="body1" color="gray">
+                  {product.name}
+                </Typography>
+              </Box>
+              <Box className="ratings-box">
+                {product.ratings.stars}⭐ | {product.ratings.total_ratings} Ratings
+              </Box>
+              <Box className="price-box">
                       <Typography
                         variant="h6"
-                        sx={{
-                          fontWeight: "bold",
-                        }}
+                        sx={{ fontWeight: "bold" }}
                       >
                         ₹{product.price.selling_price}
                       </Typography>
-
                       <Typography
                         variant="body2"
                         sx={{
@@ -1986,60 +2049,46 @@ export default function Dashboard() {
                       >
                         MRP : ₹{product.price.mrp}
                       </Typography>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        sx={{
-                          color: "orange",
-                        }}
-                      >
+                      <Typography variant="body1" className="discount-text">
                         ({product.discount})
                       </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        variant: "body2",
-                        fontWeight: "bold",
-                        color: "green",
-                      }}
-                    >
-                      inclusive of all taxes
-                    </Box>
-                    <Box>
-                      <Typography variant="body2" fontWeight="bold">
+              </Box>
+              <Box className="taxes-text">Inclusive of all taxes</Box>
+              <Box>
+              <Typography variant="body2" fontWeight="bold">
                         Available Sizes
-                      </Typography>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: 1,
-                          paddingTop: 1,
-                          maxHeight: "50px",
-                        }}
-                      >
+              </Typography>
+                      <Box className="sizes-container">
                         {(sizes[product.id]
                           ? product.available_sizes
                           : product.available_sizes.slice(0, 4)
                         ).map((size) => (
-                          <Chip key={size} label={size} variant="outlined" />
+                          <Chip
+                            key={size}
+                            label={size}
+                            variant="outlined"
+                            className="size-chip"
+                          />
                         ))}
                         {product.available_sizes.length > 4 && (
                           <Button
                             onClick={() => handleSizesChange(product.id)}
                             size="small"
+                            className="more-button"
                           >
                             More
                           </Button>
                         )}
-                      </Box>
-                    </Box>
+                        </Box>
+                        </Box>
                   </Box>
                 </Box>
               ))}
-          </Box>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
     </Container>
   );
 }
+
+         
