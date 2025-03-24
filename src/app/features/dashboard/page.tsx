@@ -1,11 +1,25 @@
 "use client";
 
+
 import React from "react";
-import {Box,Container,Button,Typography,Chip,TextField,} from "@mui/material";
+import {
+  Box,
+  Container,
+  Button,
+  Typography,
+  Chip,
+  TextField,
+  makeStyles,
+} from "@mui/material";
 import SubHeader from "../reusableComponents/SubHeader";
 import Grid from "@mui/material/Grid2";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store"; 
+import { addProduct} from "../../redux/cartSlice";
+import { setProducts} from "../../redux/cartSlice";
+
 
 const SampleProductData = [
   {
@@ -1814,26 +1828,33 @@ const SampleProductData = [
 
 export default function Dashboard() {
   const router = useRouter();
-  const searchParams= useSearchParams();
-  const filterBy = searchParams.get('filterBy');
+  const searchParams = useSearchParams();
+  const filterBy = searchParams.get("filterBy");
+  const cartItems = useSelector((state:RootState) => state.cart);
+  console.log({
+    cartCount:cartItems.cartCount,
+    cartItems:cartItems.cartProducts
+  });
+  const dispatch = useDispatch();
+
 
   const [products, setProducts] = React.useState(SampleProductData);
   const [view, setView] = React.useState("list");
   const [sizes, setSizes] = React.useState<{ [key: string]: boolean }>({});
   const [search, setSearch] = React.useState("");
-  
- React.useEffect(() => {
-    if (filterBy){
-       const filteredProducts = SampleProductData.filter((product) => {
-         if(filterBy=== "home_and_living") {
-           return product.category==="Home & Living";
-          }
-          return product.category.toLowerCase() === filterBy.toLowerCase();
+
+
+  React.useEffect(() => {
+    if (filterBy) {
+      const filteredProducts = SampleProductData.filter((product) => {
+        if (filterBy === "home_and_living") {
+          return product.category === "Home & Living";
+        }
+        return product.category.toLowerCase() === filterBy.toLowerCase();
       });
-       setProducts(filteredProducts);
-   }
- },[filterBy]);
-  
+      setProducts(filteredProducts);
+    }
+  }, [filterBy]);
 
   const handleViewChange = (type: string) => {
     setView(type);
@@ -1850,7 +1871,8 @@ export default function Dashboard() {
     router.push(`/features/dashboard/detail?id=${id}`);
   };
 
-  const handleOnSearch = (event: any) => {
+
+  const handleOnSearch = (event:any) => {
     setSearch(event.target.value);
     const filteredProducts = SampleProductData.filter((product) =>
       product.brand.toLowerCase().includes(search.toLowerCase())
@@ -1877,7 +1899,6 @@ export default function Dashboard() {
     
     .filter-box {
       height: calc(100vh - 128px); 
-      
     }
 
     
@@ -1977,111 +1998,122 @@ export default function Dashboard() {
 
   return (
     <Container maxWidth="xl" disableGutters>
-      <style>{styles}</style> 
-        <Box className="subheader">
-          <SubHeader />
-        </Box>
+      <style>{styles}</style>
+      <Box className="subheader">
+        <SubHeader />
+      </Box>
 
       <Box className="search-bar">
         <TextField
-        label="Search"
-         variant="outlined"
-         value={search}
-         onChange={handleOnSearch}
+          label="Search"
+          variant="outlined"
+          value={search}
+          onChange={handleOnSearch}
         />
         <Button
-         variant={view==="grid" ? "contained": "outlined"}
-         onClick={()=>handleViewChange("grid")}
+          variant={view === "grid" ? "contained" : "outlined"}
+          onClick={() => handleViewChange("grid")}
         >
           Grid
         </Button>
         <Button
-         variant={view==="list" ? "contained": "outlined"}
-         onClick={()=>handleViewChange("list")}
+          variant={view === "list" ? "contained" : "outlined"}
+          onClick={() => handleViewChange("list")}
         >
           List
         </Button>
       </Box>
       <Grid container>
-        <Grid size={{xs:12,md:4}}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Box className="filter-box"></Box>
         </Grid>
-        <Grid size={{xs:12,md:8}}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <Box className="display-list">
-            {products?.map((product)=>(
-            <Box
-            key={product.id}
-            className="product-box"
-            onClick={()=>handleOnProductClick(product.id)}
-          >
-            <Box
-            component="img"
-            src={product.image}
-            className="product-image"
-            />
-            <Box className="product-details">
-              <Box>
-                <Typography variant="h6" color="black" fontWeight="bold">
-                  {product.brand}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="body1" color="gray">
-                  {product.name}
-                </Typography>
-              </Box>
-              <Box className="ratings-box">
-                {product.ratings.stars}⭐ | {product.ratings.total_ratings} Ratings
-              </Box>
-              <Box className="price-box">
-                      <Typography
-                        variant="h6"
-                        sx={{ fontWeight: "bold" }}
-                      >
-                        ₹{product.price.selling_price}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          textDecoration: "line-through",
-                          color: "gray",
-                        }}
-                      >
-                        MRP : ₹{product.price.mrp}
-                      </Typography>
-                      <Typography variant="body1" className="discount-text">
-                        ({product.discount})
-                      </Typography>
-              </Box>
-              <Box className="taxes-text">Inclusive of all taxes</Box>
-              <Box>
-              <Typography variant="body2" fontWeight="bold">
-                        Available Sizes
-              </Typography>
-                      <Box className="sizes-container">
-                        {(sizes[product.id]
-                          ? product.available_sizes
-                          : product.available_sizes.slice(0, 4)
-                        ).map((size) => (
-                          <Chip
-                            key={size}
-                            label={size}
-                            variant="outlined"
-                            className="size-chip"
-                          />
-                        ))}
-                        {product.available_sizes.length > 4 && (
-                          <Button
-                            onClick={() => handleSizesChange(product.id)}
-                            size="small"
-                            className="more-button"
-                          >
-                            More
-                          </Button>
-                        )}
-                        </Box>
-                        </Box>
+            {products?.map((product) => (
+              <Box
+                key={product.id}
+                className="product-box"
+                onClick={() => handleOnProductClick(product.id)}
+              >
+                <Box
+                  component="img"
+                  src={product.image}
+                  className="product-image"
+                />
+                <Box className="product-details">
+                  <Box>
+                    <Typography variant="h6" color="black" fontWeight="bold">
+                      {product.brand}
+                    </Typography>
                   </Box>
+                  <Box>
+                    <Typography variant="body1" color="gray">
+                      {product.name}
+                    </Typography>
+                  </Box>
+                  <Box className="ratings-box">
+                    {product.ratings.stars}⭐ | {product.ratings.total_ratings}{" "}
+                    Ratings
+                  </Box>
+                  <Box className="price-box">
+                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                      ₹{product.price.selling_price}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        textDecoration: "line-through",
+                        color: "gray",
+                      }}
+                    >
+                      MRP : ₹{product.price.mrp}
+                    </Typography>
+                    <Typography variant="body1" className="discount-text">
+                      ({product.discount})
+                    </Typography>
+                  </Box>
+                  <Box className="taxes-text">Inclusive of all taxes</Box>
+                  <Box>
+                    <Typography variant="body2" fontWeight="bold">
+                      Available Sizes
+                    </Typography>
+                    <Box className="sizes-container">
+                      {(sizes[product.id]
+                        ? product.available_sizes
+                        : product.available_sizes.slice(0, 4)
+                      ).map((size) => (
+                        <Chip
+                          key={size}
+                          label={size}
+                          variant="outlined"
+                          className="size-chip"
+                        />
+                      ))}
+                      {product.available_sizes.length > 4 && (
+                        <Button
+                          onClick={() => handleSizesChange(product.id)}
+                          size="small"
+                          className="more-button"
+                        >
+                          More
+                        </Button>
+                      )}
+                    </Box>
+                  </Box>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => {dispatch(addProduct(product));
+                    }}
+                    sx={{
+                      marginTop: "10px",
+                      fontWeight:"bold",
+                      backgroundColor:"blue"
+
+                    }}
+                  >
+                    ADD TO BAG
+                  </Button>
                 </Box>
               ))}
             </Box>
