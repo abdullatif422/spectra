@@ -12,6 +12,7 @@ export default function Header() {
                     alignItems:"center",
                     gap:2,
                     padding:2,
+                    // paddingTop:20
             }}>
        
         </Box>    

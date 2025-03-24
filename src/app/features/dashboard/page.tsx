@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+
+import React from "react";
 import {
   Box,
   Container,
@@ -18,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store"; 
 import { addProduct} from "../../redux/cartSlice";
 import { setProducts} from "../../redux/cartSlice";
-
 
 
 const SampleProductData = [
@@ -1838,11 +1838,11 @@ export default function Dashboard() {
   const dispatch = useDispatch();
 
 
-
   const [products, setProducts] = React.useState(SampleProductData);
   const [view, setView] = React.useState("list");
   const [sizes, setSizes] = React.useState<{ [key: string]: boolean }>({});
   const [search, setSearch] = React.useState("");
+
 
   React.useEffect(() => {
     if (filterBy) {
@@ -1870,6 +1870,7 @@ export default function Dashboard() {
   const handleOnProductClick = (id: string) => {
     router.push(`/features/dashboard/detail?id=${id}`);
   };
+
 
   const handleOnSearch = (event:any) => {
     setSearch(event.target.value);
@@ -2114,11 +2115,12 @@ export default function Dashboard() {
                     ADD TO BAG
                   </Button>
                 </Box>
-              </Box>
-            ))}
-          </Box>
+              ))}
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
     </Container>
   );
 }
+
+         

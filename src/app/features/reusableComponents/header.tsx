@@ -5,6 +5,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import Grid from "@mui/material/Grid2";
+import { useRouter } from "next/navigation";
 
 const HeaderCategories = [
   {
@@ -96,6 +97,7 @@ const HeaderCategories = [
   },
   {
     name: "Home & Living",
+    filterBy:"home_and_living",
     subCategories: [
       { group_name: "Bed Linen & Furnishing", name: "Bedsheets" },
       { group_name: "Bed Linen & Furnishing", name: "Bed Runners" },
@@ -144,121 +146,170 @@ const HeaderCategories = [
 ];
 
 export default function Header() {
+  const router=useRouter();
+
+  const handleFilteredBy = (category: any) => {
+    const filterValue = category.name === "Home & Living" ? "home_and_living" : category.name;  
+    router.push(`/features/dashboard?filterBy=${filterValue}`);
+  };
+
   return (
     <Box
       sx={{
         display: "flex",
         minHeight: "64px",
+        flexGrow:1,
         backgroundColor: "white",
-        justifyContent: "flex-start",
         alignItems: "center",
-        gap: "30px",
+        // position: "fixed",
+        // top: 0,
+        // zIndex:1000,
+        // boxShadow: 2,
+        width:"100%",
+       
       }}
     >
-      <Box
-        component="img"
-        src="https://images.indianexpress.com/2021/01/myntra.png?w=640"
-        alt="Logo"
-        sx={{
-          height: "100px",
-          width: "100px",
-          object: "fill",
-          cursor: "pointer",
-        }}
-      />
+      <Grid container >
+        <Grid size={{xs:4,lg:6}} sx ={{display:"flex",flexDirection:"row"}}>
+            <Box
+              component="img"
+              src="https://images.indianexpress.com/2021/01/myntra.png?w=640"
+              alt="Logo"
+              sx={{
+                height: "150px",
+                width: "150px",
+                object: "fill",
+                cursor:"pointer"
+                
+              }}
+            />
+            <Box sx={{
+              display:"flex",
+              flexDirection:"row",
+              marginLeft:"10px",
+              gap:2,
+            }}>
+            {HeaderCategories?.map((Category) => (
+              <Box key={Category.name}
+                onClick={() => handleFilteredBy(Category)}
+              sx={{
+                display:"flex",
+                flexDirection:"column",
+                minWidth:"80px",
+                alignItems:"center",
+                justifyContent:"center",
+                gap:1,
+                padding:1
 
-      {HeaderCategories?.map((Category) => (
-        <Box key={Category.name}>
-          <Typography
-            sx={{
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              fontSize: "16px",
-              cursor:"pointer"
-            }}
-          >
-            {Category.name}
-          </Typography>
-        </Box>
-      ))}
+              }}>
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                    textAlign:"center",
+                    fontSize: "16px",
+                    cursor: "pointer",
+                    "&:hover":{textDecoration:"underline"}
 
-      <TextField
-        variant="outlined"
-        placeholder="Search for products, brands and more.."
-        size="medium"
-        sx={{
-          display: "flex",
-          width: "500px",
-          borderRadius: "4px",
-          marginLeft: "150px",
-          backgroundColor: "whitesmoke",
-          
-        }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <Box
-        sx={{
-          display: "flex",
-          gap: 3,
-          marginLeft: "50px",
-          cursor:"pointer"
-        }}
-      >
-        <Box
+                  }}
+                >
+                  {Category.name}
+                </Typography>
+              </Box>
+            ))}
+            </Box>
+        </Grid>
+        <Grid size={{xs:4,lg:3}}
+        sx={{display:"flex",paddingLeft:"150px",width:"100%"}}>
+          <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <PersonOutlineOutlinedIcon />
-          <Typography
+            display:"flex",
+            flex:1,
+            alignItems:"center",
+            justifyContent:"center",
+            width:"100%",
+            maxWidth:"300px"
+          }}>
+          <TextField
+            variant="outlined"
+            placeholder="Search for products, brands and more.."
+            size="medium"
+            fullWidth
             sx={{
-              fontSize: "16px",
+              display: "flex",
+              backgroundColor: "whitesmoke",
+              borderRadius:"8px"
             }}
-          >
-            Profile
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <FavoriteBorderOutlinedIcon />
-          <Typography
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          </Box>
+        </Grid>
+        <Grid size={{xs:4,lg:3}}
             sx={{
-              fontSize: "16px",
-            }}
-          >
-            Wishlist
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <ShoppingBagOutlinedIcon />
-          <Typography
-            sx={{
-              fontSize: "16px",
-            }}
-          >
-            Bag
-          </Typography>
-        </Box>
-      </Box>
+              display: "flex",
+              flexDirection:"row",
+              paddingLeft:"180px",
+              cursor: "pointer",
+              alignItems:"center",
+              justifyContent:"right",
+              gap:3
+            }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <PersonOutlineOutlinedIcon />
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                }}
+              >
+                Profile
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <FavoriteBorderOutlinedIcon />
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                }}
+              >
+                Wishlist
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <ShoppingBagOutlinedIcon />
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                }}
+              >
+                Bag
+              </Typography>
+            </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

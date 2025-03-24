@@ -50,7 +50,7 @@ export const SampleProductData= [
       customerReviews: [
         {
           id: "1",
-          name: "Er Shamik Mukherjee",
+          name: "Shamik Mukherjee",
           date: "3 Sept 2024",
           rating: "5⭐",
           review:
