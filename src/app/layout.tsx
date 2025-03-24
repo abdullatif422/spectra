@@ -2,10 +2,12 @@
 
 import * as React from "react";
 import { ThemeProvider } from "@mui/material/styles";
+import {Provider} from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
+import {store} from "./redux/store";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -36,11 +38,13 @@ export default function RootLayout({
       <body>
         <CacheProvider value={cache}>
           <InitColorSchemeScript attribute="class" />
+          <Provider store={store}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Header/>
             {children}
           </ThemeProvider>
+          </Provider>
         </CacheProvider>
       </body>
     </html>
